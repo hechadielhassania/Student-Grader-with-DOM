@@ -1,4 +1,6 @@
-let students = [
+
+// Function to retrieve students from localStorage or initialize with default data
+let students = JSON.parse(localStorage.getItem('students')) || [
     { name: "Jordan", grade: "A", missingAssignments: 2 },
     { name: "Kyle", grade: "B", missingAssignments: 1 },
     { name: "Maxine", grade: "C", missingAssignments: 3 },
@@ -35,7 +37,7 @@ function editStudent(index) {
         students[index].name = newName.trim();
         students[index].grade = newGrade.trim();
         students[index].missingAssignments = parseInt(newMissingAssignments);
-        displayStudents(); // Refresh the table
+        updateStudents(); // Update students array
     }
 }
 
@@ -47,9 +49,16 @@ function addStudent() {
 
     // Add new student if inputs are not empty
     if (newName !== null && newName.trim() !== "" && newGrade !== null && newGrade.trim() !== "" && newMissingAssignments !== null && !isNaN(newMissingAssignments)) {
-        students.push({ name: newName.trim(), grade: newGrade.trim(), missingAssignments: parseInt(newMissingAssignments) });
-        displayStudents(); // Refresh the table
+        const newStudent = { name: newName.trim(), grade: newGrade.trim(), missingAssignments: parseInt(newMissingAssignments) };
+        students.push(newStudent);
+        updateStudents(); // Update students array
     }
+}
+
+// Function to update localStorage with current students data
+function updateStudents() {
+    localStorage.setItem('students', JSON.stringify(students)); // Update localStorage
+    displayStudents(); // Refresh the table
 }
 
 // Initial display of students
